@@ -36,15 +36,8 @@ public class GenericDocument implements SectionDocument {
   DocumentMetadata metadata;
 
   public GenericDocument(InputStream in, String mediaType, String path) throws IOException {
-    this.mediaType = mediaType;
     this.path = path;
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    byte buffer[] = new byte[128];
-    int len = -1;
-    while((len = in.read(buffer)) > -1) {
-      out.write(buffer, 0, len);
-    }
-    content = out.toByteArray();
+    this.update(mediaType, in);
   }
 
   @Override
@@ -54,7 +47,7 @@ public class GenericDocument implements SectionDocument {
 
   @Override
   public void update(String mediaType, InputStream in) throws IOException {
-    this.mediaType = mediaType.toString();
+    this.mediaType = mediaType;
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     byte buffer[] = new byte[128];
     int len = -1;
@@ -62,6 +55,7 @@ public class GenericDocument implements SectionDocument {
       out.write(buffer, 0, len);
     }
     content = out.toByteArray();
+    lastUpdated = new Date();
   }
 
   @Override
